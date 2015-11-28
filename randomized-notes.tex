@@ -3,6 +3,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{framed}
+\usepackage{graphicx}
 
 \DeclareMathOperator*{\E}{\mathbb{E}}
 \let\Pr\relax
@@ -112,7 +113,9 @@ respectively, which they want to send to $t_1$ and $t_2$. Our objective will be 
 are our ``bottlenecks.'' We can be clever by sending $A$ along the top path, $B$ along the bottom path, 
 and $A \oplus B$ along the middle path, and decoding $B, A$ at $t_1, t_2$, respectively, using $A \oplus B$.
 
-PUT A GRAPH HERE
+\begin{center}
+\includegraphics[width=0.4\linewidth]{network_coding}
+\end{center}
 
 Suppose that we now want to send a message from $s_1$ to $t_1$, and another from $s_2$ to $t_2$. Then
 we can send $\frac{2}{3}$ of each source's message to the non-shared branch and $\frac{1}{3}$ to the 
@@ -205,6 +208,10 @@ in which we only transmit from a node if it has received all (possible) incoming
 in the following graph, if we don't employ DAG ordering, it's possible that we reach the destination
 ``too soon,'' and the subspace we've transmitted isn't of high enough dimension; suppose we take path
 $(i)$, for example.
+
+\begin{center}
+\includegraphics[width=0.4\linewidth]{dag_ordered}
+\end{center}
 
 \subsection{Continuous Transmission} 
 
