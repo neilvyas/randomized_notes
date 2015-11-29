@@ -1,7 +1,10 @@
-all:
+all: graphs
 	rubber --pdf randomized-notes.tex
 	rubber --clean randomized-notes.pdf
 
 graphs:
-	dot -Tpng dag_ordered.dot -o dag_ordered.png
-	dot -Tpng network_coding.dot -o network_coding.png
+	dot -Tpdf dag_ordered.dot -o dag_ordered.pdf
+	dot -Tpdf network_coding.dot -o network_coding.pdf
+
+clean:
+	rm -rf *.pdf
