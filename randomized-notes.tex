@@ -149,7 +149,7 @@ The proof follows by induction on time.
 
 Suppose there exist $u_1, \dots, u_C$ with $u_j \in X_{v_j}$, and the $u_i$ are linearly independent. Send $u$ from $v_i$ to $v_i^\prime$. Then we want to show that there exist $u_1 \in X_{v_1}, \dots, u_C \in X_{v_C}$ such that these $u_i$ are linear independent.
 
-This is true if $u \perp \{u_1, \ldots, u_{i-1}, u_{i+1}, \ldots, u_C \}$, else this is true if $\left< u, u_i \right> \neq 0$. Note that this second condition occurs with probability $1 - \frac{1}{q}$.  Since we make at most $m$ moves total, we have that ``they all work,'' i.e. the vectors are linearly independent in each step, with probability $1 - \frac{m}{q}$. Note that $m$ here is the length of the path from $s$ to $t$, not the vectors of the input.
+This is true if $u \perp \{u_1, \ldots, u_{i-1}, u_{i+1}, \ldots, u_C\}$, else this is true if $\left<u, u_i\right> \neq 0$. Note that this second condition occurs with probability $1 - \frac{1}{q}$.  Since we make at most $m$ moves total, we have that ``they all work,'' i.e. the vectors are linearly independent in each steap, with probability $1 - \frac{m}{q}$. Note that $m$ here is the length of the path from $s$ to $t$, not the vectors of the input.
 
 Thus, we need to make $m$ steps, and in each step we perform $d^2\log q$ work, since it takes $\log q$ time to operate on vectors in $\F_q$ and (the $d^2$ is apparently from matrix-vector operations, or something; I also have in my notes that this is the time it takes to check all those inner products).  So our time complexity for bit operations is $O(md^2 \log q)$ with success probability $1 - \frac{1}{m^c}$, and thus our time complexity for word operations is $O(md^2)$, as desired.
 \end{proof}
