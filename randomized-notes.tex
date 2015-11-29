@@ -15,16 +15,6 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\F}{\mathbb{F}}
 
-%complexity theory variables.
-\newcommand{\Pt}{\ensuremath{\mathbf{P}}}
-\newcommand{\NP}{\ensuremath{\mathbf{NP}}}
-\newcommand{\PP}{\ensuremath{\mathbf{PP}}}
-\newcommand{\BPP}{\ensuremath{\mathbf{BPP}}}
-\newcommand{\ZPP}{\ensuremath{\mathbf{Z_{PP}}}}
-\newcommand{\RP}{\ensuremath{\mathbf{R_{P}}}}
-\newcommand{\coRP}{\ensuremath{\mathbf{coR_{P}}}}
-\newcommand{\Ppoly}{\ensuremath{\mathbf{P_{poly}}}}
-
 \newcommand{\Alg}{\ensuremath{\mathcal{A}}}
 
 \mathchardef\hyp="2D
@@ -86,7 +76,7 @@ In this lecture we will study Network Coding and Edge Connectivity.
 
 Define the $s\hyp t$ edge-connectivity to be the number of disjoint paths from $s$ to $t$. Note that this is the same as the size of the $s\hyp t$ min-cut, which we will denote as $C_{s,t}$. Today, we will study $s\hyp t$ edge-connectivity on DAGs, or Directed Acyclic Graphs.
 
-Naively, we can use the Ford-Fulkerson algorithm, where we greedily choose paths at each step, flipping those paths that we used to move from $s$ to $t$. This achieves $O(mn)$ time, where $m$ is the path length from $s$ to $t$, and $n$ is the max flow of the graph.
+Naively, we can use the Ford-Fulkerson algorithm, where we greedily choose paths at each step, flipping those paths that we used to move from $s$ to $t$. This achieves $O(md)$ time, where $m$ is the path length from $s$ to $t$, and $d$ is the max flow of the graph.
 
 Suppose we are interested in the following two variants of this problem: all-pairs and single-source edge-connectivity. Then, using the algorithm described above, we can achieve $O(mdn^2)$ and $O(mdn)$ time, respectively, where $m,n$ are as above and $d \geq \text{max flow}$; note that $d = \text{max degree}$ will work.
 
@@ -128,17 +118,25 @@ Suppose that the capacity of each edge is $(k+r) \log q$ bits, i.e. we can trans
 \begin{algorithm}[H]
 \begin{algorithmic}
 \Function{SubspaceCommunication}{}
+  \State Set $X_s$ as described above
+  \State $X_v := \{0\} \quad \forall v \not= s$
   \ForAll{$(v, v^\prime) \in \text{DAG-ordered edges}$}
     \State $v$ samples $m \in X_v$
     \State $v$ sends $m$ to $v^\prime$
     \State $v^\prime$ ``adds'' $m$ to $X_{v^\prime}$
-  \EndFor \\
+  \EndFor
+  \State % this adds a new line for some reason
   \Return $X_t$
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
 
-We claim that there is a $1 - \frac{m}{q}$ chance that $v^\prime$ ``learns'' something from $v$ in this procedure, given that $X_{v^\prime} \neq X_v$. This is because $\exists u\in X_v, \notin X_{v^\prime}$, and in order for $v^\prime$ to ``not learn'' anything from $v$, the coefficient of $u$ in $m$, the message that $v$ sends to $v^\prime$, must be 0. Since we are over the field $\F_q$, this happens with probability $\frac{1}{q}$.
+\begin{claim}
+There is a $1 - \frac{m}{q}$ chance that $v^\prime$ ``learns'' something from $v$ in this procedure, given that $X_{v^\prime} \neq X_v$.
+\end{claim}
+\begin{proof}
+This is because there exists a $u$ such that $u\in X_v, u \notin X_{v^\prime}$, and in order for $v^\prime$ to ``not learn'' anything from $v$, the coefficient of $u$ in $m$, the message that $v$ sends to $v^\prime$, must be 0. Since we are in the field $\F_q$, this happens with probability $\frac{1}{q}$.
+\end{proof}
 
 Note that the communication cost is $kr\log q$ (which grows slowly with $q$), so we can set $q$ to be a very large prime without a great penalty.
 
@@ -168,7 +166,11 @@ Note that we have, throughout, relied on some ordering of the vertices. This ord
 
 This algorithm involves every vertex communicating at most once, so what about continuous transmission?  We'll give a cursory look at the gossip algorithm.
 
-After $T$ rounds, $t$ receives $X$ with dimension $\geq C(T-n)$ w.p. $1 - \frac{(T - n)m}{q}$, where $k = C(T-n)$. This implies that we've sent $(r\log q)C(T-n)$ bits. We claim that $r\log(q) CT$ is optimal for any protocol.
+After $T$ rounds, $t$ receives $X$ with dimension $\geq C(T-n)$ w.p. $1 - \frac{(T - n)m}{q}$, where $k = C(T-n)$. This implies that we've sent $(r\log q)C(T-n)$ bits.
+
+\begin{claim}
+$r\log(q) CT$ is optimal for any protocol.
+\end{claim}
 \end{document}
 
 
