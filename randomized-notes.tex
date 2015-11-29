@@ -76,9 +76,9 @@ In this lecture we will study Network Coding and Edge Connectivity.
 
 Define the $s\hyp t$ edge-connectivity to be the number of disjoint paths from $s$ to $t$. Note that this is the same as the size of the $s\hyp t$ min-cut, which we will denote as $C_{s,t}$. Today, we will study $s\hyp t$ edge-connectivity on DAGs, or Directed Acyclic Graphs.
 
-Naively, we can use the Ford-Fulkerson algorithm, where we greedily choose paths at each step, flipping those paths that we used to move from $s$ to $t$. This achieves $O(md)$ time, where $m$ is the path length from $s$ to $t$, and $d$ is the max flow from $s$ to $t$.
+Naively, we can use the Ford-Fulkerson algorithm, where we greedily choose paths at each step, flipping those paths that we used to move from $s$ to $t$. This achieves $O(md)$ time, where $m$ is the number of edges, and $d$ is the max flow from $s$ to $t$.
 
-Suppose we are interested in the following two variants of this problem: all-pairs and single-source edge-connectivity. Then, using the algorithm described above, we can achieve $O(mdn^2)$ and $O(mdn)$ time, respectively, where $m,n$ are as above and any $d$ that upper bounds the max flow (for example, the maximum degree of a vertex) will work.
+Suppose we are interested in the following two variants of this problem: all-pairs and single-source edge-connectivity. Then, using the algorithm described above, we can achieve $O(mdn^2)$ and $O(mdn)$ time, respectively, where $n$ is the number of vertices and $m$ and $d$ are as above. (Note: we can replace $d$ by any quantity that upper bounds the max flow, for example, the maximum vertex degree.)
 
 Can we improve? We claim that we can achieve single-source edge-connectivity in $O(md^2)$. (Due to Cheung, Lau, and Leung, 2011). In fact, we can achieve acyclic, single-source edge-connectivity in $O(md^{\omega - 1})$ and all-pairs (not necessarily acyclic) in $O(m^\omega)$, where $\omega$ is the time complexity of matrix multiplication; we upper bound this by 3 to make the first claim.
 
@@ -90,7 +90,7 @@ The idea behind this analysis is to relate the edge-connectivity problem to netw
 In each time step, each node can send one ``packet'' of information, and each edge is capable of transmitting one ``packet.'' Say that we have the following graph, and $s_1, s_2$ have messages $A, B$ respectively, which they want to send to $t_1$ and $t_2$. Our objective will be to saturate the edges of the min-cut, since those are our ``bottlenecks.'' We can be clever by sending $A$ along the top path, $B$ along the bottom path, and $A \oplus B$ along the middle path, and decoding $B, A$ at $t_1, t_2$, respectively, using $A \oplus B$.
 
 \begin{center}
-\includegraphics[width=0.4\linewidth]{network_coding.pdf}
+\includegraphics[width=0.6\linewidth]{network_coding.pdf}
 \end{center}
 
 Suppose that we now want to send a message from $s_1$ to $t_1$, and another from $s_2$ to $t_2$. Then we can send $\frac{2}{3}$ of each source's message to the non-shared branch and $\frac{1}{3}$ to the shared branch, achieving $\frac{1}{2}\ell$ bits communicated per round.
@@ -107,9 +107,9 @@ m_1, \ldots, m_k \in \F_q^r;
 $$
 note that this input is $kr\log q$ bits in size.
 
-For $i = 1,\dots,k$, let $\hat{m}_i = (e_i,m_i) \in \F_q^{r+k}$, where $e_i$ is the unit vector in $\F_q^k$. Note that $\hat{m}_1,\dots,\hat{m}_k$ are linearly independent because of the $e_i$s. This guarantees that we can recover the original vectors exactly through Gram-Schmidt. Now, let $X_s = \mathrm{span} \left\{ \hat{m_1}, \ldots, \hat{m_k} \right\} \subseteq \F_q^{r+k}$.
+For $i = 1,\dots,k$, let $\hat{m}_i = (e_i,m_i) \in \F_q^{r+k}$, where $e_i$ is the unit vector in $\F_q^k$. Note that $\hat{m}_1,\dots,\hat{m}_k$ are linearly independent because of the $e_i$s. This guarantees that we can recover the original vectors exactly through Gram-Schmidt. Now, let $X_s = \mathrm{span} \left\{ \hat{m}_1, \dots, \hat{m}_k \right\} \subseteq \F_q^{r+k}$.
 
-Our goal is now to transmit $X_s$ efficiently to $t$. This is a simpler problem because, in order to transmit the original messages, we only need to transmit $k$ linearly independent vectors in $X_s$. This is sufficient to recover the basis $\hat{m_1}, \ldots, \hat{m_k}$, and from there our original messages.
+Our goal is now to transmit $X_s$ efficiently to $t$. This is a simpler problem because, in order to transmit the original messages, we only need to transmit $k$ linearly independent vectors in $X_s$. This is sufficient to recover the basis $\hat{m}_1, \dots, \hat{m}_k$, and from there our original messages.
 
 Suppose that the capacity of each edge is $(k+r) \log q$ bits, i.e. we can transmit one vector in the subspace per edge per time step.
 
@@ -149,7 +149,7 @@ The proof follows by induction on time.
 
 Suppose there exist $u_1, \dots, u_C$ with $u_j \in X_{v_j}$, and the $u_i$ are linearly independent. Send $u$ from $v_i$ to $v_i^\prime$. Then we want to show that there exist $u_1 \in X_{v_1}, \dots, u_C \in X_{v_C}$ such that these $u_i$ are linear independent.
 
-This is true if $u \perp \{u_1, \ldots, u_{i-1}, u_{i+1}, \ldots, u_C\}$, else this is true if $\left<u, u_i\right> \neq 0$. Note that this second condition occurs with probability $1 - \frac{1}{q}$.  Since we make at most $m$ moves total, we have that ``they all work,'' i.e. the vectors are linearly independent in each steap, with probability $1 - \frac{m}{q}$. Note that $m$ here is the length of the path from $s$ to $t$, not the vectors of the input.
+This is true if $u \perp \{u_1, \ldots, u_{i-1}, u_{i+1}, \ldots, u_C\}$, else this is true if $\left<u, u_i\right> \neq 0$. Note that this second condition occurs with probability $1 - \frac{1}{q}$.  Since we make at most $m$ moves total, we have that ``they all work,'' i.e. the vectors are linearly independent in each step, with probability $1 - \frac{m}{q}$. Note that $m$ here is the length of the path from $s$ to $t$, not the vectors of the input.
 
 Thus, we need to make $m$ steps, and in each step we perform $d^2\log q$ work, since it takes $\log q$ time to operate on vectors in $\F_q$ and (the $d^2$ is apparently from matrix-vector operations, or something; I also have in my notes that this is the time it takes to check all those inner products).  So our time complexity for bit operations is $O(md^2 \log q)$ with success probability $1 - \frac{1}{m^c}$, and thus our time complexity for word operations is $O(md^2)$, as desired.
 \end{proof}
@@ -159,7 +159,7 @@ Now we address the method of sampling $u$ from $X_v$. Set $X_v = U_v^TY$, where 
 Note that we have, throughout, relied on some ordering of the vertices. This ordering is DAG ordering, in which we only transmit from a node if it has received all (possible) incoming messages. For example, in the following graph, if we don't employ DAG ordering, it's possible that we reach the destination ``too soon,'' and the subspace we've transmitted isn't of high enough dimension; suppose we take path $(i)$, for example.
 
 \begin{center}
-\includegraphics[width=0.4\linewidth]{dag_ordered.pdf}
+\includegraphics[width=0.7\linewidth]{dag_ordered.pdf}
 \end{center}
 
 \subsection{Continuous Transmission}
