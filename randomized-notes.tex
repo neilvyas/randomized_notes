@@ -76,9 +76,9 @@ In this lecture we will study Network Coding and Edge Connectivity.
 
 Define the $s\hyp t$ edge-connectivity to be the number of disjoint paths from $s$ to $t$. Note that this is the same as the size of the $s\hyp t$ min-cut, which we will denote as $C_{s,t}$. Today, we will study $s\hyp t$ edge-connectivity on DAGs, or Directed Acyclic Graphs.
 
-Naively, we can use the Ford-Fulkerson algorithm, where we greedily choose paths at each step, flipping those paths that we used to move from $s$ to $t$. This achieves $O(md)$ time, where $m$ is the path length from $s$ to $t$, and $d$ is the max flow of the graph.
+Naively, we can use the Ford-Fulkerson algorithm, where we greedily choose paths at each step, flipping those paths that we used to move from $s$ to $t$. This achieves $O(md)$ time, where $m$ is the path length from $s$ to $t$, and $d$ is the max flow from $s$ to $t$.
 
-Suppose we are interested in the following two variants of this problem: all-pairs and single-source edge-connectivity. Then, using the algorithm described above, we can achieve $O(mdn^2)$ and $O(mdn)$ time, respectively, where $m,n$ are as above and $d \geq \text{max flow}$; note that $d = \text{max degree}$ will work.
+Suppose we are interested in the following two variants of this problem: all-pairs and single-source edge-connectivity. Then, using the algorithm described above, we can achieve $O(mdn^2)$ and $O(mdn)$ time, respectively, where $m,n$ are as above and any $d$ that upper bounds the max flow (for example, the maximum degree of a vertex) will work.
 
 Can we improve? We claim that we can achieve single-source edge-connectivity in $O(md^2)$. (Due to Cheung, Lau, and Leung, 2011). In fact, we can achieve acyclic, single-source edge-connectivity in $O(md^{\omega - 1})$ and all-pairs (not necessarily acyclic) in $O(m^\omega)$, where $\omega$ is the time complexity of matrix multiplication; we upper bound this by 3 to make the first claim.
 
